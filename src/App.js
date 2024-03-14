@@ -1,25 +1,89 @@
-import logo from './logo.svg';
-import './App.css';
+import  './App.css';
+import  {line_data} from './mbta-data'
+import {useState, useEffect} from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+function MyButton({count, onClick}) {
+
+    return (
+        <div>
+            <button onClick={onClick}>
+                I'm a button
+                Clicked {count} times
+            </button>
+
+        </div>
+    )
+        ;
 }
 
-export default App;
+function LinesTable({data}) {
+    console.log(data)
+    const rows = [];
+    data.forEach((line) => {
+            console.log(line)
+            rows.push(<RouteLine rec ={{id:line.id, name:line.attributes.long_name, color:line.attributes.color}}/>)
+        }
+    )
+
+    return (
+        <table>
+            <tbody>{rows}</tbody>
+        </table>
+    )
+}
+
+
+//TODO: style with color
+// why can't I pass the object with attributes down?
+function RouteLine({ rec }) {
+
+    console.log("Route Line")
+    return (
+        <tr>
+            <td style={{color: "#"+rec.color}}>{rec.id}</td>
+            <td>{rec.name}</td>
+        </tr>
+    );
+}
+
+
+function useTime() {
+    const [time, setTime] = useState(() => new Date());
+    useEffect(() => {
+        const id = setInterval(() => {
+            setTime(new Date());
+        }, 1000);
+        return () => clearInterval(id);
+    }, []);
+    return time;
+}
+
+export default function MyApp() {
+    const [count, setCount] = useState(0);
+    const time = useTime();
+
+    function handleClick() {
+        setCount(count + 1);
+    }
+
+    return (
+        <div>
+            <h1>Welcome to my app</h1>
+            <MyButton count={count} onClick={handleClick}/>
+            <MyButton count={count} onClick={handleClick}/>
+            <Clock color={"red"} time={time.toLocaleTimeString()}/>
+            <LinesTable data={line_data.data}/>
+        </div>
+    );
+}
+
+function Clock({color, time}) {
+    return (
+        <h1 style={{color: color}}>
+            {time}
+        </h1>
+    );
+}
+
+//  define a component for Vehicle Row
+// Define a component fof the list of vehicles
