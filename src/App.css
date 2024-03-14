@@ -46,3 +46,14 @@
   padding: 0;
   grid-row-gap: 0.5em;
 }
+
+
+
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border-collapse: collapse;
+  border-style: none;
+  padding: 0;
+  grid-row-gap: 0.5em;
+}

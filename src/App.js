@@ -26,9 +26,9 @@ function LinesTable({data}) {
     )
 
     return (
-        <table>
-            <tbody>{rows}</tbody>
-        </table>
+        <div  className={'main-container'}>
+            {rows}
+        </div>
     )
 }
 
@@ -39,10 +39,12 @@ function RouteLine({ rec }) {
 
     console.log("Route Line")
     return (
-        <tr>
-            <td style={{color: "#"+rec.color}}>{rec.id}</td>
-            <td>{rec.name}</td>
-        </tr>
+<div className={'wrapper'}>
+            <div>{rec.id}</div>
+            <div style={{color: "#"+rec.color}}>{rec.name}</div>
+</div>
+
+
     );
 }
 
