@@ -1,5 +1,5 @@
-import  './App.css';
-import  {line_data} from './mbta-data'
+import './App.css';
+import {line_data} from './mbta-data'
 import {useState, useEffect} from 'react';
 
 function MyButton({count, onClick}) {
@@ -16,33 +16,24 @@ function MyButton({count, onClick}) {
         ;
 }
 
-function LinesTable({data}) {
-    console.log(data)
-    const rows = [];
-    data.forEach((line) => {
-            console.log(line)
-            rows.push(<RouteLine rec ={{id:line.id, name:line.attributes.long_name, color:line.attributes.color}}/>)
-        }
-    )
 
-    return (
-        <div  className={'main-container'}>
-            {rows}
-        </div>
-    )
-}
-
-
-//TODO: style with color
+//TODO:
 // why can't I pass the object with attributes down?
-function RouteLine({ rec }) {
+// change the onclick handler to display a new component with the list of stops
+// refactor the handler to a higher  scope
+function RouteLine({ rec}) {
+    function displayDetails () {
+        alert('stops for: '+ rec.name)
+    }
 
     console.log("Route Line")
     return (
-<div className={'wrapper'}>
+        <div className={'wrapper'}>
             <div>{rec.id}</div>
-            <div style={{color: "#"+rec.color}}>{rec.name}</div>
-</div>
+
+            <div onClick={displayDetails}
+                 style={{color: "#" + rec.color}}>{rec.name}</div>
+        </div>
 
 
     );
@@ -74,7 +65,8 @@ export default function MyApp() {
             <MyButton count={count} onClick={handleClick}/>
             <MyButton count={count} onClick={handleClick}/>
             <Clock color={"red"} time={time.toLocaleTimeString()}/>
-            <LinesTable data={line_data.data}/>
+            <LinesTable
+                data={line_data.data}/>
         </div>
     );
 }
@@ -86,6 +78,25 @@ function Clock({color, time}) {
         </h1>
     );
 }
+
+
+function LinesTable({data}) {
+    console.log(data)
+    const rows = [];
+    data.forEach((line) => {
+            console.log(line)
+            rows.push(<RouteLine
+                rec={{id: line.id, name: line.attributes.long_name, color: line.attributes.color}}/>)
+        }
+    )
+
+    return (
+        <div className={'main-container'}>
+            {rows}
+        </div>
+    )
+}
+
 
 //  define a component for Vehicle Row
 // Define a component fof the list of vehicles

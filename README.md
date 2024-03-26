@@ -1,3 +1,15 @@
+# Project information
+
+This is a toy project to learn about React
+
+It uses the MBTA API to get information  about all the lines,  and allowfor  drill down.
+
+## Iterations:
+
+- work using hard coded data to get flows working
+- going top down use API to fetch data on demand (prob need to sort out caching)
+-  etc
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

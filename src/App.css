@@ -40,6 +40,8 @@
 
 .main-container {
   display: grid;
+  width: 30em;
+  margin: 3em;
   grid-template-columns: repeat(1, 1fr);
   border-collapse: collapse;
   border-style: none;
