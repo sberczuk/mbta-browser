@@ -24,6 +24,7 @@ function MyButton({count, onClick}) {
 function RouteLine({ rec}) {
     function displayDetails () {
         alert('stops for: '+ rec.name)
+        return <StopsTable>stops</StopsTable>
     }
 
     console.log("Route Line")
@@ -31,8 +32,8 @@ function RouteLine({ rec}) {
         <div className={'wrapper'}>
             <div>{rec.id}</div>
 
-            <div onClick={displayDetails}
-                 style={{color: "#" + rec.color}}>{rec.name}</div>
+            <button onClick={displayDetails}
+                 style={{color: "#" + rec.color}}>{rec.name}</button>
         </div>
 
 
@@ -79,6 +80,9 @@ function Clock({color, time}) {
     );
 }
 
+function StopsTable({line}){
+    return (<div> WHOOPS!</div>)
+}
 
 function LinesTable({data}) {
     console.log(data)
