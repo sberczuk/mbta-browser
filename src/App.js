@@ -1,7 +1,8 @@
 import './App.css';
-import {line_data} from './mbta-data'
-import ReactDOM from "react-dom";
-import {useState, useEffect} from 'react';
+import {line_data, route_data} from './mbta-data'
+import {useEffect, useState} from 'react';
+import {LinesTable} from "./LinesTable";
+import {RoutesTable} from "./RoutesTable";
 
 function MyButton({count, onClick}) {
 
@@ -15,29 +16,6 @@ function MyButton({count, onClick}) {
         </div>
     )
         ;
-}
-
-
-//TODO:
-// why can't I pass the object with attributes down?
-// change the onclick handler to display a new component with the list of stops
-// refactor the handler to a higher  scope
-function RouteLine({rec, onSelect}) {
-    // change this to follow the model here:  https://react.dev/reference/react-dom/createPortal
-    // set state to reflect which line to show details for
-    // display only when not empty.
-
-
-    return (
-        <li id={rec.id} key={rec.key} className={'wrapper'}>
-            <div key={rec.key}>{rec.id}</div>
-
-            <button onClick={onSelect}
-                    style={{color: "#" + rec.color}}>{rec.name}</button>
-
-
-        </li>
-    );
 }
 
 
@@ -72,6 +50,8 @@ export default function MyApp() {
             <div id={"details-div"}>Details here</div>
             <LinesTable
                 data={line_data.data}/>
+
+            <RoutesTable data={route_data.data}/>
         </div>
     );
 }
@@ -82,57 +62,6 @@ function Clock({color, time}) {
             {time}
         </h1>
     );
-}
-
-// Another option: Juyst have this at the  details div, and vary what's there  based on the click
-function StopsTable({line, onDone}) {
-    return (
-        <div>
-            <p>whoopos! {line}</p>
-            <button onClick={onDone}>Close</button>
-        </div>
-    )
-}
-
-function LinesTable({data}) {
-    const [selectedLine, setSelectedLine] = useState('');
-
-
-    console.log(data)
-    const rows = [];
-    data.forEach((line) => {
-        console.log(line)
-        function handleSelect(){
-            console.log('sel ' + line.id)
-            setSelectedLine(line.id)
-        }
-
-        rows.push(<RouteLine
-            rec={{
-                key: line.id, id: line.id, name: line.attributes.long_name,
-                color: line.attributes.color
-            }}
-            onSelect={handleSelect}/>)
-
-    })
-
-    // TODO: Why isn't this re-rendering after a state change?
-    return (
-        <>
-            <ul className={'main-container'}>
-                {rows}
-            </ul>
-            <div>{'selected: '+ selectedLine}</div>
-            {
-                selectedLine == "line-Red" && ReactDOM.createPortal(
-                    <div>
-                        <StopsTable line={selectedLine} onDone={() => setSelectedLine("")}/>
-                    </div>
-                    , document.getElementById('details-div'))
-            }
-        </>
-    )
-
 }
 
 
