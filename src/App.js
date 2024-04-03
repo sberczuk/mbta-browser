@@ -47,11 +47,13 @@ export default function MyApp() {
             <MyButton count={count} onClick={handleClick}/>
             {/*<Clock color={"red"} time={time.toLocaleTimeString()}/>*/}
 
-            <div id={"details-div"}>Details here</div>
+            <RoutesTable data={route_data.data}/>
+            <div id={"stops-div"}>Details here</div>
+            
             <LinesTable
                 data={line_data.data}/>
+            <div id={"details-div"}>Details here</div>
 
-            <RoutesTable data={route_data.data}/>
         </div>
     );
 }

@@ -4,6 +4,7 @@
 // refactor the handler to a higher  scope
 import {useState} from "react";
 import ReactDOM from "react-dom";
+import {stop_data} from "./mbta-data";
 
 function Route({rec, onSelect}) {
     // set state to reflect which Route to show details for
@@ -22,14 +23,38 @@ function Route({rec, onSelect}) {
     );
 }
 
+
 // Another option: Just have this at the  details div, and vary what's there  based on the click
-function RouteStopsTable({Route, onDone}) {
+function RouteStopsTable({routeName, onDone}) {
+    var data = stop_data.get(routeName).data
+
+    const rows = [];
+    console.log('selected ' +routeName)
+    console.log('dataLeb ' +data.length)
+    data.forEach((r) => {
+        console.log(r)
+
+        // function handleSelect() {
+        //     console.log('selR ' + r.id)
+        //     setSelectedRoute(r.id)
+        //
+        // }
+
+        rows.push(<li
+                key={r.id} id={r.id} > {r.attributes.name} { r.attributes.address}</li>
+            )
+
+    })
     return (
         <div>
-            <p>whoopos! {Route}</p>
-            <button onClick={onDone}>Close</button>
+        <ul>
+            {rows}
+        </ul>
+    <button onClick={onDone}>Close</button>
         </div>
-    )
+
+
+)
 }
 
 export function RoutesTable({data}) {
@@ -42,8 +67,9 @@ export function RoutesTable({data}) {
         console.log(r)
 
         function handleSelect() {
-            console.log('sel ' + Route.id)
-            setSelectedRoute(Route.id)
+            console.log('selR ' + r.id)
+            setSelectedRoute(r.id)
+
         }
 
         rows.push(<Route
@@ -64,11 +90,11 @@ export function RoutesTable({data}) {
             </ul>
             <div>{'selected: ' + selectedRoute}</div>
             {
-                selectedRoute == "Route-Red" && ReactDOM.createPortal(
+                selectedRoute == "Red" && ReactDOM.createPortal(
                     <div>
-                        <RouteStopsTable Route={selectedRoute} onDone={() => setSelectedRoute("")}/>
+                        <RouteStopsTable routeName={selectedRoute} onDone={() => setSelectedRoute("")}/>
                     </div>
-                    , document.getElementById('details-div'))
+                    , document.getElementById('stops-div'))
             }
         </>
     )
