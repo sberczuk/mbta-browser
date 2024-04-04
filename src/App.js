@@ -49,7 +49,7 @@ export default function MyApp() {
 
             <RoutesTable data={route_data.data}/>
             <div id={"stops-div"}>Details here</div>
-            
+
             <LinesTable
                 data={line_data.data}/>
             <div id={"details-div"}>Details here</div>
