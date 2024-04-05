@@ -52,7 +52,7 @@ function RouteStopsTable({routeName, onDone}) {
         }
         let ignore = false
         getStops(routeName).then(result => {
-                if (!ignore){
+                if (!ignore) {
                     console.log('doing fetch')
                     setStopsList(result)
                 }
@@ -100,34 +100,57 @@ function RouteStopsTable({routeName, onDone}) {
 
 export function RoutesTable({data}) {
     const [selectedRoute, setSelectedRoute] = useState('');
-
+    const [allRoutes, setAllRoutes] = useState(data);
+    const [displayType, setDisplayType] = useState(1)
 // populate based on the ROUTE not the Route using
     // curl -X GET "https://api-v3.mbta.com/stops?filter%5Broute%5D=Red" -H "accept: application/vnd.api+json"
 
     console.log(data)
     const rows = [];
-    data.forEach((r) => {
-        console.log(r)
 
-        function handleSelect() {
-            console.log('selR ' + r.id)
-            setSelectedRoute(r.id)
+    // the funcion that calculates the rows.
+    // this is called in the render
+    const buildRows = () => {
+        const displayRoutes = allRoutes.filter((r) => r.attributes.type == displayType)
+        displayRoutes.forEach((r) => {
+            console.log(r)
 
-        }
+            function handleSelect() {
+                console.log('selR ' + r.id)
+                setSelectedRoute(r.id)
+            }
 
-        rows.push(<Route
-            rec={{
-                key: r.id, id: r.id, name: r.attributes.long_name,
-                color: r.attributes.color
-            }}
-            onSelect={handleSelect}/>)
+            rows.push(<Route
+                rec={{
+                    key: r.id, id: r.id, name: r.attributes.long_name,
+                    color: r.attributes.color
+                }}
+                onSelect={handleSelect}/>)
 
-    })
+        })
+        return rows;
+    }
 
+    const handleChange = event => {
+        console.log('change' + event.target.value);
+        setSelectedRoute("")
+        let selectedRouteType = Number(event.target.value);
+        setDisplayType(selectedRouteType);
+    };
     return (
         <>
+            <label for="routeType">Route Type to Display</label>
+            <select id="type" name="type" onChange={handleChange}>
+                <option value="0" selected>Light Rail</option>
+                <option value="1">Subway</option>
+                <option value="2">Commuter Rail</option>
+                <option value="3">Bus</option>
+                <option value="4">Ferry</option>
+
+            </select>
+
             <ul className={'main-container'}>
-                {rows}
+                {buildRows()}
             </ul>
             <div>{'selected: ' + selectedRoute}</div>
             {
