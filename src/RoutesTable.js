@@ -12,7 +12,7 @@ function Route({rec, onSelect}) {
 
 
     return (
-        <li id={rec.id} key={rec.key} className={'wrapper'}>
+        <li key={rec.key} id={rec.id}  className={'wrapper'}>
             <div key={rec.key}>{rec.id}</div>
 
             <button onClick={onSelect}
@@ -101,17 +101,20 @@ function RouteStopsTable({routeName, onDone}) {
 export function RoutesTable({data}) {
     const [selectedRoute, setSelectedRoute] = useState('');
     const [allRoutes, setAllRoutes] = useState(data);
-    const [displayType, setDisplayType] = useState(1)
+    const [displayRouteType, setDisplayRouteType] = useState(1)
+    const [displayRoutes, setDisplayRoutes] = useState([])
 // populate based on the ROUTE not the Route using
     // curl -X GET "https://api-v3.mbta.com/stops?filter%5Broute%5D=Red" -H "accept: application/vnd.api+json"
-
+    useEffect(() => {
+            setDisplayRoutes(allRoutes.filter((r) => r.attributes.type == displayRouteType))
+        }, [displayRouteType]
+    )
     console.log(data)
     const rows = [];
 
-    // the funcion that calculates the rows.
+    // the function that calculates the rows.
     // this is called in the render
     const buildRows = () => {
-        const displayRoutes = allRoutes.filter((r) => r.attributes.type == displayType)
         displayRoutes.forEach((r) => {
             console.log(r)
 
@@ -120,7 +123,7 @@ export function RoutesTable({data}) {
                 setSelectedRoute(r.id)
             }
 
-            rows.push(<Route
+            rows.push(<Route key={r.id}
                 rec={{
                     key: r.id, id: r.id, name: r.attributes.long_name,
                     color: r.attributes.color
@@ -135,18 +138,17 @@ export function RoutesTable({data}) {
         console.log('change' + event.target.value);
         setSelectedRoute("")
         let selectedRouteType = Number(event.target.value);
-        setDisplayType(selectedRouteType);
+        setDisplayRouteType(selectedRouteType);
     };
     return (
         <>
-            <label for="routeType">Route Type to Display</label>
-            <select id="type" name="type" onChange={handleChange}>
-                <option value="0" selected>Light Rail</option>
-                <option value="1">Subway</option>
-                <option value="2">Commuter Rail</option>
-                <option value="3">Bus</option>
-                <option value="4">Ferry</option>
-
+            <label htmlFor="routeType">Route Type to Display</label>
+            <select id="type" name="type" defaultValue={displayRouteType.toString(10)} onChange={handleChange}>
+                <option key={"0"} value="0">Light Rail</option>
+                <option key={"1"} value="1">Subway</option>
+                <option key={"2"} value="2">Commuter Rail</option>
+                <option key={"3"} value="3">Bus</option>
+                <option key={"4"} value="4">Ferry</option>
             </select>
 
             <ul className={'main-container'}>
