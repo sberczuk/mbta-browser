@@ -32,12 +32,16 @@ function useTime() {
 
 export default function MyApp() {
     const [count, setCount] = useState(0);
+    const [routeData, setRouteData] = useState(route_data.data);
     // const time = useTime();
 
     function handleClick() {
         setCount(count + 1);
     }
-
+// does not work!
+//     useEffect(() => {
+//         setRouteData(route_data.data)
+//     }, []);
 
     return (
 
@@ -48,7 +52,7 @@ export default function MyApp() {
 
             {/*<Clock color={"red"} time={time.toLocaleTimeString()}/>*/}
 
-            <RoutesTable data={route_data.data}/>
+            <RoutesTable data={routeData}/>
             <div id={"stops-div"}></div>
 
             {/*<LinesTable*/}
