@@ -75,11 +75,6 @@ function RouteStopsTable({routeName, onDone}) {
     stopsList.forEach((r) => {
         console.log(r)
 
-        // function handleSelect() {
-        //     console.log('selR ' + r.id)
-        //     setSelectedRoute(r.id)
-        //
-        // }
         rows.push(<li
             key={r.id} id={r.id}> {r.attributes.name} {r.attributes.address}</li>
         )
@@ -89,6 +84,7 @@ function RouteStopsTable({routeName, onDone}) {
     return (
 
         <div>
+            <h2>Stops for {routeName}</h2>
             <ul>
                 {rows}
             </ul>

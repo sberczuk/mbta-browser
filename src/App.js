@@ -65,7 +65,7 @@ export default function MyApp() {
 
 
     useEffect(() => {
-        loadRoutesLocal().then(d => {
+        loadRoutes().then(d => {
             setRouteData(d)
         })
     }, []);
