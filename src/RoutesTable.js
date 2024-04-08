@@ -109,7 +109,7 @@ export function RoutesTable({data}) {
             setDisplayRoutes(allRoutes.filter((r) => r.attributes.type == displayRouteType))
         }, [displayRouteType]
     )
-    console.log(data)
+    console.log({'display': displayRoutes, 'data': allRoutes})
     const rows = [];
 
     // the function that calculates the rows.
