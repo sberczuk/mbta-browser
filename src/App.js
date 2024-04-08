@@ -49,16 +49,8 @@ export default function MyApp() {
             <h1>Welcome to my MBTA Transit app</h1>
 
             <p>Select the type of transit Route to see the list of Routes. Click on a station to see the stops for the route</p>
-
-            {/*<Clock color={"red"} time={time.toLocaleTimeString()}/>*/}
-
             <RoutesTable data={routeData}/>
             <div id={"stops-div"}></div>
-
-            {/*<LinesTable*/}
-            {/*    data={line_data.data}/>*/}
-            {/*<div id={"details-div"}>Details here</div>*/}
-
         </div>
     );
 }
