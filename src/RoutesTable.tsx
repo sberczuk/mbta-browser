@@ -2,11 +2,10 @@
 // why can't I pass the object with attributes down?
 // change the onclick handler to display a new component with the list of stops
 // refactor the handler to a higher  scope
-import React from "react";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import ReactDOM from "react-dom";
 import {JSX} from "react/jsx-runtime";
-import loadRoutes from "./loadData.ts";
+import getRoutes, {getStops} from "./loadData.ts";
 
 
 interface StopsRow {
@@ -48,20 +47,6 @@ function RouteDisplay({rec, onSelect}: RouteProps) {
     );
 }
 
-// do this in a UseEffect
-// https://react.dev/reference/react/useEffect
-async function getStops(routeId: string) {
-    const baseUrl = "https://api-v3.mbta.com/stops";
-    const url = encodeURI(baseUrl + '?filter[route]=' + routeId)
-    const response = await fetch(url, {
-        headers: {
-            accept: "application/vnd.api+json"
-        }
-    });
-    const newVar = await response.json();
-    return newVar.data;
-}
-
 interface RouteStopTableProps {
     routeName: string
     onDone: React.MouseEventHandler<HTMLButtonElement>
@@ -80,12 +65,9 @@ function RouteStopsTable({routeName, onDone}: RouteStopTableProps) {
         if (routeName.length === 0) {
             return
         }
-        let ignore = false
         getStops(routeName).then(result => {
-                if (!ignore) {
                     console.log('doing fetch')
                     setStopsList(result)
-                }
             }
         )
 
@@ -95,7 +77,6 @@ function RouteStopsTable({routeName, onDone}: RouteStopTableProps) {
 
         return () => {
             console.log('doing effect close callback')
-            ignore = true
         };
 
     }, [routeName]);
@@ -155,7 +136,7 @@ export function RoutesTable() {
     console.log("got date in Routes Table " + allRoutes.length)
     useEffect(() => {
         console.log("Loading Route Data")
-        loadRoutes().then(d => {
+        getRoutes().then(d => {
             setAllRoutes(d)
         })
 
