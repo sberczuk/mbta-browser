@@ -1,34 +1,26 @@
-
-
 export default async function getRoutes() {
     const baseUrl = "https://api-v3.mbta.com/routes";
-    const url = encodeURI(baseUrl )
     console.log("loading initial routes")
-    const response = await fetch(url, {
-        headers: {
-            accept: "application/vnd.api+json"
-        }
-    });
-    const newVar = await response.json();
-    return newVar.data;
+    return loadFromUrl(baseUrl)
 }
 
 // do this in a UseEffect
 // https://react.dev/reference/react/useEffect
 export async function getStops(routeId: string) {
     const baseUrl = "https://api-v3.mbta.com/stops";
-    let filterPart = '?filter[route]=' + routeId;
-    const url = encodeURI(baseUrl + filterPart)
+    const filterPart = '?filter[route]=' + routeId;
+    const uri = baseUrl + filterPart;
+    return loadFromUrl(uri)
+}
+
+
+export async function loadFromUrl(urlString: string) {
+    const url = encodeURI(urlString)
     const response = await fetch(url, {
         headers: {
             accept: "application/vnd.api+json"
         }
     });
-    const newVar = await response.json();
-    return newVar.data;
+    const resp = await response.json();
+    return resp.data;
 }
-
-
-//TODO:
-// write generic json getter that takes a url sets headers
-// write handlers stops and routees
